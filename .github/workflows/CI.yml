@@ -22,7 +22,6 @@ jobs:
 #          - 'nightly'
         os:
           - ubuntu-latest
-          - windows
         arch:
           - x64
           - x86
