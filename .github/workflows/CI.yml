@@ -22,6 +22,7 @@ jobs:
 #          - 'nightly'
         os:
           - ubuntu-latest
+          - windows
         arch:
           - x64
           - x86
@@ -57,3 +58,18 @@ jobs:
             using MyExample
             DocMeta.setdocmeta!(MyExample, :DocTestSetup, :(using MyExample); recursive=true)
             doctest(MyExample)'
+
+pages:
+  image: julia:0.7
+  stage: deploy
+  script:
+    - apt-get update -qq && apt-get install -y git  # needed by Documenter
+    - julia -e 'using Pkg; Pkg.clone(pwd()); Pkg.build("MyExample");'  # rebuild Julia (can be put somewhere else I'm sure
+    - julia -e 'using Pkg; import MyExample; Pkg.add("Documenter")'  # install Documenter
+    - julia --color=yes docs/make.jl  # make documentation
+    - mv docs/build public  # move to the directory picked up by Gitlab pages
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
