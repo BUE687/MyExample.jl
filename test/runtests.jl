@@ -5,5 +5,6 @@ using Test
     @test two_times_x_plus_y(2,1) == 5
     @test two_times_x_plus_y(3,1) == 7
     @test two_times_x_plus_y(2,2) == 6
+    @test MyExample.greet() == nothing
     # Write your tests here.
 end
